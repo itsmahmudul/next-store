@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer = () => {
     return (
-        <footer className="bg-blue-50 w-full py-6 mt-12 shadow-inner">
+        <footer className="bg-blue-50 w-full py-6 border-t border-gray-200">
             <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 animate-fadeIn">
                 {/* Left: Copyright */}
                 <p className="text-gray-600 text-sm">
@@ -33,7 +33,6 @@ const Footer = () => {
                 </div>
             </div>
 
-            {/* Tailwind Animation */}
             <style jsx>{`
         .animate-fadeIn {
           animation: fadeIn 1s ease forwards;
