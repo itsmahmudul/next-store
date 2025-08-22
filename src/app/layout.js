@@ -1,8 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import AuthProvider from "./providers/AuthProvider"; // import AuthProvider
+import AuthProvider from "./providers/AuthProvider";
+import LayoutWrapper from "./LayoutWrapper"; // Import the wrapper
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,9 +26,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>
-          <Navbar />
-          <main className="min-h-[calc(100vh-116px)] bg-white">{children}</main>
-          <Footer />
+          {/* Use the wrapper component instead of direct Navbar/Footer */}
+          <LayoutWrapper>
+            {children}
+          </LayoutWrapper>
         </AuthProvider>
       </body>
     </html>
