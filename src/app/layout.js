@@ -15,8 +15,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "NextStore",
+  title: "Next Store",
   description: "Next.js store app with NextAuth",
+  icons: {
+    icon: "/fav.png",
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -25,7 +28,7 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>
           <Navbar />
-          <main className='min-h-[calc(100vh-126px)]'>{children}</main>
+          <main className="min-h-[calc(100vh-126px)] bg-white">{children}</main>
           <Footer />
         </AuthProvider>
       </body>
