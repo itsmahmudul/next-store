@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { HiMenu, HiX } from "react-icons/hi";
 
 const DashboardPage = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Redirect unauthenticated users to login
   useEffect(() => {
@@ -19,9 +21,22 @@ const DashboardPage = () => {
   if (status === "loading") return <p>Loading...</p>;
 
   return (
-    <div className="min-h-[calc(100vh-116px)] flex bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100">
+      {/* Mobile sidebar toggle */}
+      <div className="md:hidden absolute top-4 left-4 z-20">
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="text-gray-700 text-2xl focus:outline-none"
+        >
+          {sidebarOpen ? <HiX /> : <HiMenu />}
+        </button>
+      </div>
+
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-md p-6 flex flex-col gap-6">
+      <aside
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-md p-6 flex flex-col gap-6 transform transition-transform duration-300
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:relative`}
+      >
         {/* User Profile */}
         {session && (
           <div className="flex items-center gap-3">
@@ -45,7 +60,7 @@ const DashboardPage = () => {
           </div>
         )}
 
-        <h2 className="text-xl font-bold mt-4">Dashboard</h2>
+        <h2 className="text-xl text-gray-800 font-bold mt-4">Dashboard</h2>
 
         {/* Navigation Links */}
         {session && (
@@ -56,19 +71,12 @@ const DashboardPage = () => {
             Add Product
           </Link>
         )}
-
-        <Link
-          href="/dashboard/products"
-          className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition text-center"
-        >
-          Product List
-        </Link>
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-4">Welcome to your Dashboard</h1>
-        <p>Dashboard content goes here...</p>
+      <main className="flex-1 p-6 md:p-8 ml-0 md:ml-64 transition-all duration-300">
+        <h1 className="text-3xl font-bold mb-4 text-gray-800">Welcome to your Dashboard</h1>
+        <p className="text-gray-800">Dashboard content goes here...</p>
       </main>
     </div>
   );
