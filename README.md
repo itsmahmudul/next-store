@@ -1,31 +1,34 @@
-Next.js E-Commerce Store
-https://img.shields.io/badge/Next.js-14.0-black?style=for-the-badge&logo=next.js
-https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript
+Next.js E-Commerce Store with Authentication
+https://img.shields.io/badge/Next.js-15.0-black?style=for-the-badge&logo=next.js
+https://img.shields.io/badge/NextAuth.js-5.0-purple?style=for-the-badge
+https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript
 https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC?style=for-the-badge&logo=tailwind-css
-https://img.shields.io/badge/license-MIT-green?style=for-the-badge
 
-A modern, responsive e-commerce store built with Next.js, JavaScript, and Tailwind CSS. This application features product listings, shopping cart functionality, and a clean, user-friendly interface.
+A modern e-commerce application built with Next.js 15 featuring public and protected pages with authentication using NextAuth.js. Users can browse products, view details, and after logging in, access a protected dashboard to manage products.
 
 ✨ Features
-🛍️ Product catalog with categories
+Public Landing Page with navigation, hero section, product highlights, and footer
 
-🔍 Search functionality
+Authentication System using NextAuth.js with social login (Google)
 
-🛒 Shopping cart with add/remove items
+Product Catalog with listing and detail pages
 
-💳 Checkout process
+Protected Dashboard for product management
 
-📱 Fully responsive design
+Responsive Design with Tailwind CSS
 
-⚡ Fast performance with Next.js optimization
+Theme Toggle for light/dark mode
 
-🎨 Modern UI with Tailwind CSS
+🚀 Live Demo
+🌐 Live Application: https://next-store-silk-one.vercel.app/
 
-🚀 Getting Started
+📦 Getting Started
 Prerequisites
-Node.js 16.8 or higher
+Node.js 18.0 or higher
 
 npm, yarn, pnpm, or bun
+
+Google OAuth credentials (for social login)
 
 Installation
 Clone the repository:
@@ -41,8 +44,23 @@ npm install
 yarn install
 # or
 pnpm install
-# or
-bun install
+Set up environment variables:
+
+bash
+cp .env.example .env.local
+Configure your environment variables in .env.local:
+
+env
+# NextAuth.js
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-here
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# Database (if using)
+DATABASE_URL=your-database-url
 Run the development server:
 
 bash
@@ -51,51 +69,100 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
-Open http://localhost:3000 with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-📁 Project Structure
+🛣️ Route Summary
+Public Routes
+/ - Landing page with hero section and product highlights
+
+/products - Product listing page
+
+/products/[id] - Individual product details page
+
+/login - Authentication page
+
+Protected Routes (Requires Authentication)
+/dashboard - User dashboard
+
+/dashboard/add-product - Add new product form
+
+/dashboard/products - Manage existing products
+
+API Routes
+/api/auth/[...nextauth] - NextAuth.js authentication endpoints
+
+/api/products - Product CRUD operations
+
+/api/products/[id] - Single product operations
+
+🏗️ Project Structure
 text
 next-store/
-├── app/                    # Next.js 13+ app directory
-│   ├── api/               # API routes
-│   ├── cart/              # Cart page
-│   ├── products/          # Products pages
-│   ├── globals.css        # Global styles
-│   ├── layout.js          # Root layout
-│   └── page.js            # Home page
-├── components/            # Reusable components
-│   ├── ui/               # Basic UI components
-│   ├── product/          # Product-related components
-│   └── cart/             # Cart components
-├── lib/                  # Utility functions
-├── public/               # Static assets
-├── styles/               # Additional styles
-└── data/                 # Mock data
-🛠️ Technologies Used
-Framework: Next.js 14 with App Router
+├── app/
+│   ├── api/
+│   │   ├── auth/
+│   │   │   └── [...nextauth]/
+│   │   ├── products/
+│   │   └── products/[id]/
+│   ├── dashboard/
+│   │   ├── add-product/
+│   │   ├── products/
+│   │   └── page.js
+│   ├── products/
+│   │   └── [id]/
+│   ├── login/
+│   ├── globals.css
+│   ├── layout.js
+│   └── page.js
+├── components/
+│   ├── auth/
+│   ├── dashboard/
+│   ├── products/
+│   ├── ui/
+│   └── layout/
+├── lib/
+│   ├── auth.js
+│   ├── db.js
+│   └── utils.js
+├── types/
+├── public/
+└── styles/
+🔐 Authentication
+This application uses NextAuth.js for authentication with the following providers:
 
-Language: JavaScript (ES6+)
+Google OAuth - Social login
+
+Credentials (optional) - Email/password login
+
+Setting up Google OAuth
+Go to the Google Cloud Console
+
+Create a new project or select an existing one
+
+Navigate to "APIs & Services" > "Credentials"
+
+Create an OAuth 2.0 Client ID
+
+Add http://localhost:3000/api/auth/callback/google to authorized redirect URIs
+
+Copy the Client ID and Client Secret to your .env.local file
+
+🛠️ Technologies Used
+Framework: Next.js 15 with App Router
+
+Authentication: NextAuth.js
 
 Styling: Tailwind CSS
 
+Language: TypeScript
+
+Database: JSON file (can be replaced with any database)
+
 Icons: Lucide React
 
-State Management: React Context API
+Form Handling: React Hook Form
 
-🛍️ Available Routes
-/ - Home page with featured products
-
-/products - All products listing
-
-/products/[id] - Individual product details
-
-/cart - Shopping cart page
-
-/checkout - Checkout process
-
-/api/* - API endpoints
+Validation: Zod
 
 📦 Building for Production
 Create a production build:
@@ -106,8 +173,6 @@ npm run build
 yarn build
 # or
 pnpm build
-# or
-bun build
 Start the production server:
 
 bash
@@ -116,28 +181,26 @@ npm start
 yarn start
 # or
 pnpm start
-# or
-bun start
 🚀 Deployment
 Deploy to Vercel (Recommended)
-The easiest way to deploy your Next.js app is to use the Vercel Platform from the creators of Next.js.
-
 Push your code to GitHub
 
 Connect your repository to Vercel
 
-Vercel will automatically deploy your Next.js application
+Add your environment variables in the Vercel dashboard
 
-Deploy to Other Platforms
-The application can be deployed to any platform that supports Node.js:
+Vercel will automatically deploy your application
 
-Netlify
+Environment Variables for Production
+Make sure to set these environment variables in your production environment:
 
-AWS Amplify
+NEXTAUTH_URL - Your production URL
 
-Railway
+NEXTAUTH_SECRET - A secure random string
 
-DigitalOcean App Platform
+GOOGLE_CLIENT_ID - Your production Google Client ID
+
+GOOGLE_CLIENT_SECRET - Your production Google Client Secret
 
 🤝 Contributing
 We welcome contributions! Please follow these steps:
@@ -152,16 +215,22 @@ Push to the branch (git push origin feature/AmazingFeature)
 
 Open a Pull Request
 
+
 📞 Support
 If you have any questions or need help:
 
 Open an issue on GitHub
 
-Contact the maintainer at your-mdmahmudul.dev@gmail.com
+Check the Next.js documentation
+
+Refer to the NextAuth.js documentation
 
 🙏 Acknowledgments
 Next.js team for the amazing framework
 
+NextAuth.js team for authentication solution
+
 Tailwind CSS for the utility-first CSS framework
 
-Lucide for the beautiful icons
+Vercel for seamless deployment
+
